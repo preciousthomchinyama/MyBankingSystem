@@ -61,8 +61,9 @@ $result = mysqli_query($conn, $sql);
 <body>
     <div class="side-container">
         <a href="./index.php">Home</a>
-        <a href="./register.html" class="nav-link">register</a>
-        <a href="./make_deposit.html" class="nav-link">make deposit</a>
+        <a href="./register.html" class="nav-link">Register a member</a>
+        <a href="./deposit.html" class="nav-link">Deposit</a>
+        <a href="./withdraw.html" class="nav-link">Withdraw</a>
     </div>
     <div class="main-container">
         <?php
@@ -105,7 +106,8 @@ $result = mysqli_query($conn, $sql);
     // Load initial content
 
     // JavaScript for handling registration form submission
-        document.addEventListener('submit', function(e){
+       document.addEventListener('submit', function(e){
+            // Register form
             if(e.target.classList.contains('register-form')){
                 e.preventDefault();
 
@@ -124,8 +126,51 @@ $result = mysqli_query($conn, $sql);
                 .then(data => {
                     alert(data.message);
                 });
+            } 
+            // Deposit form
+            else if(e.target.classList.contains('deposit-form')){
+                e.preventDefault();
+
+                const accountNumber = document.getElementById('accountNumber').value;
+                const amount = document.getElementById('Amount').value;
+
+                const formData = new FormData();
+                formData.append('account_number', accountNumber); // ✅ use correct variable
+                formData.append('amount', amount);
+
+                fetch('deposit.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.dep_message); // ✅ match PHP key
+                });
+            }
+            //deposit form
+            else if(e.target.classList.contains('withdraw-form')){
+                e.preventDefault();
+
+                const acc_number = document.getElementById('acc-number').value;
+                const withdraw_amount = document.getElementById('withdraw-amount').value;
+
+                const formData = new FormData();
+                formData.append('acc_number', acc_number); // ✅ use correct variable
+                formData.append('w_amount', withdraw_amount);
+
+                fetch('withdraw.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.withd_message); // ✅ match PHP key
+                });
             }
         });
+    
+
+        //java handling deposit form
 </script>
 </body>
 </html>
