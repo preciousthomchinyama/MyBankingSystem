@@ -1,5 +1,5 @@
 <?php
-include "config.php";
+include "../config.php";
 
 header('Content-Type: application/json');
 
@@ -17,6 +17,11 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     // Get current balance
     $check_sql = "SELECT `balance` FROM `funds` WHERE account_number = '$acc_number'";
     $check_result = mysqli_query($conn, $check_sql);
+
+    if (!$check_result) {
+        echo json_encode(['withd_message' => 'Database error: ' . mysqli_error($conn)]);
+        exit;
+    }
 
     if(mysqli_num_rows($check_result) > 0){
 

@@ -1,5 +1,7 @@
 <?php
-include 'config.php';
+include '../config.php';
+
+header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $account_name = $_POST['account_name'];
@@ -8,11 +10,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Insert new account into the database
     $sql = "INSERT INTO `members` (account_name, account_number, password) VALUES ('$account_name', '$account_number', sha1('$password'))";
-    
+
     if (mysqli_query($conn, $sql)) {
         $msg = "New account created successfully. Account Number: " . $account_number;
     } else {
-        $msg = "Error: " . $sql . " " . mysqli_error($conn);
+        $msg = "Error: " . mysqli_error($conn);
     }
     echo json_encode(['message' => $msg]);
 
